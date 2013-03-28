@@ -8,10 +8,8 @@
 #include <GL/glew.h>          // Include GLEW
 #include <GL/glfw.h>          // Include GLFW
 #include <glm/glm.hpp>        // Include GLM
-#include <glm/gtc/matrix_transform.hpp>
 
 #include <common/shader.cpp>  // Include "LoadShaders"
-#include <common/controls.cpp>
 
 
 
