@@ -133,10 +133,11 @@ int Init(void)
        return -1;
    }
 
-   glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);          // 4x antialiasing
-   glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 4);  // Major number of the desired minimum OpenGL version.
-   glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 3);  // Minor number of the desired minimum OpenGL version.
-   glfwOpenWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);        // Let the system choose which context should implement.
+   glfwOpenWindowHint(GLFW_FSAA_SAMPLES, 4);                   // 4x antialiasing
+   glfwOpenWindowHint(GLFW_OPENGL_VERSION_MAJOR, 3);           // Major number of the desired minimum OpenGL version.
+   glfwOpenWindowHint(GLFW_OPENGL_VERSION_MINOR, 0);           // Minor number of the desired minimum OpenGL version.
+   glfwOpenWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);    // Disallow legacy functionality if needed (OpenGl 3.0 or above)
+   glfwOpenWindowHint(GLFW_OPENGL_PROFILE, 0);                 // Default. Let the system choose which context should implement.
 
    const unsigned int window_width=1024, window_height=768;
 
@@ -147,9 +148,18 @@ int Init(void)
        glfwTerminate();
        return -1;
    }
+       else
+   {
+       int major, minor, rev;
+
+       glfwGetGLVersion(&major, &minor, &rev);
+
+       std::cout<<"OpenGL version received: "<<major<<"."<<minor<<"."<<rev<<"\n"<<std::endl;
+   }
 
    // Initialize GLEW
    glewExperimental = true; // Needed for core profile
+
    if (glewInit() != GLEW_OK) {
        std::cerr<<"Failed to initialize GLEW"<<std::endl;
        return -1;
@@ -263,8 +273,6 @@ void createVBO(GLuint &vertexbuffer, GLuint &colorbuffer, GLuint &pointbuffer, G
       g_color_buffer_data.push_back(1.);
       g_color_buffer_data.push_back(0.);
       g_color_buffer_data.push_back(0.);
-
-      std::cout<<i<<") "<<g_vertex_buffer_data[vec_VBO_size*2+i]<<std::endl;
    }
 
    // Generate 1 buffer, put the resulting identifier in vertexbuffer
